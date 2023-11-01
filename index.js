@@ -1,17 +1,33 @@
 class Planet{
-    constructor(){
-        this.x = 200;
-        this.y = 200;
+    constructor(game){
+        this.game = game;
+        this.x = this.game.width * 0.5;
+        this.y = this.game.height * 0.5;
         this.radius = 80;
+        this.img = document.getElementById('planet');
     }
 
     draw(context){
+        context.drawImage(this.img,this.x - 100,this.y - 100);
         context.beginPath();
         context.arc(this.x,this.y,this.radius,0,Math.PI * 2);
         context.stroke();
     }
 }
 
+// Brain of the game codebase
+class Game{
+    constructor(canvas){
+        this.canvas = canvas;
+        this.width = this.canvas.width;
+        this.height = this.canvas.height;
+        this.planet = new Planet(this);
+    }
+
+    render(context){
+        this.planet.draw(context);
+    }
+}
 
 window.addEventListener('load',function () {
     const canvas = this.document.getElementById('canvas1');
@@ -21,6 +37,6 @@ window.addEventListener('load',function () {
     ctx.strokeStyle = 'white';
     ctx.lineWidth = 2;
 
-    const planet = new Planet();
-    planet.draw(ctx);
+   const game = new Game(canvas);
+   game.render(ctx);
 })
